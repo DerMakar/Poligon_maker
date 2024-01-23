@@ -107,7 +107,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(-2, 0);
@@ -133,7 +135,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -157,7 +161,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -181,7 +187,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -205,7 +213,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -229,7 +239,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -253,7 +265,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -278,7 +292,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -303,7 +319,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(1, 1);
@@ -328,7 +346,9 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
 	}
 	{
 		Point A(0, 0);
@@ -358,7 +378,102 @@ void TestPoligon() {
 		double square_s = square.Space();
 		double cross_square_s = cross_square.Space();
 		double inside_poligon_s = inside_poligon.Space();
-		assert(inside_poligon_s - std::abs(cross_square_s - square_s) < epsilon);
+		auto outside_pol = square + cross_square;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(square_s + cross_square_s - outside_s) < epsilon);
+	}
+	{
+		// two triangles, one crosser point on base's edge
+		Point A(-84.17998071, 91.75441033);
+		Point B(-67.05146691, 70.00209191);
+		Point C(-84.40989365, 52.09442871);
+		std::vector<Point> point_collection({ A, B, C});
+		Poligon base_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			base_poligon.AddPoint(point_collection[i], i);
+		}
+		Point N(-100.72093923, 70.00209191);
+		Point R(-54.12525068, 70.00209191);
+		Point S(-83.14537250, 34.03349022);
+		point_collection = std::vector<Point>({ N, R, S });
+		Poligon cross_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			cross_poligon.AddPoint(point_collection[i], i);
+		}
+		auto inside_poligon = base_poligon.HaveCrossPoligon(cross_poligon);
+		double baser_s = base_poligon.Space();
+		double crosser_s = cross_poligon.Space();
+		double inside_poligon_s = inside_poligon.Space();
+		auto outside_pol = base_poligon + cross_poligon;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(baser_s + crosser_s - outside_s) < epsilon);
+		assert(outside_s - std::abs(baser_s + crosser_s - inside_poligon_s) < epsilon);
+	}
+	{
+		// two inside poligons case
+		Point A(39.15891839, 146.28916144);
+		Point B(98.37750070, 146.28916144);
+		Point C(98.37750070, 128.37429620);
+		Point D(64.04067567 ,128.37429620);
+		Point E(64.04067567 ,102.99490378);
+		Point F(98.87513585, 102.99490378);
+		Point G(98.87513585 ,77.11787622);
+		Point H(47.12108072, 77.11787622);
+		std::vector<Point> point_collection({ A, B, C, D, E, F, G, H});
+		Poligon base_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			base_poligon.AddPoint(point_collection[i], i);
+		}
+		Point N(89.42006809, 53.72902438);
+		Point R(89.42006809, 159.72531036);
+		Point S(139.18358263, 159.22767522);
+		Point M(135.20250147, 57.21247040);
+		point_collection = std::vector<Point>({ N, R, S, M });
+		Poligon cross_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			cross_poligon.AddPoint(point_collection[i], i);
+		}
+		auto inside_poligon = base_poligon.HaveCrossPoligon(cross_poligon);
+		double baser_s = base_poligon.Space();
+		double crosser_s = cross_poligon.Space();
+		double inside_poligon_s = inside_poligon.Space();
+		auto outside_pol = base_poligon + cross_poligon;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(baser_s + crosser_s - outside_s) < epsilon);
+		assert(outside_s - std::abs(baser_s + crosser_s - inside_poligon_s) < epsilon);
+	}
+	{
+		// complex form case
+		Point A(-13.61568677, 79.48443934);
+		Point B(- 13.61568677, 88.47658976);
+		Point C(- 1.96676463, 88.47658976);
+		Point D(- 2.14185600 ,80.30565952);
+		Point E(- 2.46158533 ,65.38495725);
+		Point F(- 11.57201622 ,50.87305163);
+		Point G(- 11.57201622 ,77.23640173);
+		Point H(- 18.72486315, 51.48615280);
+		Point I(- 18.72486315, 95.42506964);
+		std::vector<Point> point_collection({ A, B, C, D, E, F, G, H, I });
+		Poligon base_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			base_poligon.AddPoint(point_collection[i], i);
+		}
+		Point N(-1.96676463, 88.47658976);
+		Point R(-2.57986580, 59.86520205);
+		Point S(-28.73884885, 77.84950290);
+		point_collection = std::vector<Point>({ N, R, S });
+		Poligon cross_poligon;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			cross_poligon.AddPoint(point_collection[i], i);
+		}
+		auto inside_poligon = base_poligon.HaveCrossPoligon(cross_poligon);
+		double baser_s = base_poligon.Space();
+		double crosser_s = cross_poligon.Space();
+		double inside_poligon_s = inside_poligon.Space();
+		auto outside_pol = base_poligon + cross_poligon;
+		double outside_s = outside_pol.Space();
+		assert(inside_poligon_s - std::abs(baser_s + crosser_s - outside_s) < epsilon);
+		assert(outside_s - std::abs(baser_s + crosser_s - inside_poligon_s) < epsilon);
 	}
 }
 

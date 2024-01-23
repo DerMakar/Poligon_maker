@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Unvalid arguments ([program name] [input_file] [output_file])";
 		return -1;
 	}
-	//FullTest();
+	FullTest();
 	const auto objects = RenderObjects(argv[1]);
 	Canvas canvas;
 	for (const auto& [obj, points] : objects) {

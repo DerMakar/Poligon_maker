@@ -111,7 +111,13 @@ Poligon Poligon::HaveCrossPoligon(const Poligon& other) const {
 				seved_points.push_back(B);
 			}
 			if (cross_point != C
-				&& cross_point != D
+				&& std::find(seved_points.begin(), seved_points.end(), C) == seved_points.end()
+				&& other.PointInPoligon(C)) {
+				double distance = PtoPDistance(cross_point.value(), A) + PtoPDistance(cross_point.value(), C);
+				distance_cont[distance] = C;
+				seved_points.push_back(C);
+			}
+			if (cross_point != D
 				&& std::find(seved_points.begin(), seved_points.end(), D) == seved_points.end()
 				&& other.PointInPoligon(D)) {
 				double distance = PtoPDistance(cross_point.value(), A) + PtoPDistance(cross_point.value(), D);
@@ -144,8 +150,8 @@ Poligon Poligon::Union(const Poligon& other) const {
 	const Poligon* crosser_ptr = &other;
 	const Poligon* baser_ptr = this;
 	while (crosser_id <= other.GetSize()
-		&& (PointInPoligon(other.GetPoint(prev_crosser_id)))
-		|| PointOnPoligonEdge(other.GetPoint(prev_crosser_id)) != -1) {
+		&& (PointInPoligon(other.GetPoint(prev_crosser_id)) == true
+		|| PointOnPoligonEdge(other.GetPoint(prev_crosser_id)) != -1)) {
 		prev_crosser_id = crosser_id++;
 	}
 	if (crosser_id > other.GetSize()) {
