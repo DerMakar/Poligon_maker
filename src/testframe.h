@@ -42,6 +42,14 @@ void TestElements() {
 	
 }
 
+void TestDrawLine() {
+	Point A(1, 1);
+	Point B(3, 3);
+	double Xmin = 0, Xmax = 5, Ymin = 0, Ymax = 5;
+	auto line = RectangleCut(A, B, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().start == A);
+}
+
 void TestSpace() {
 	{
 		Point A(1, 1);
@@ -737,6 +745,7 @@ void PointInPoligon() {
 }
 
 void FullTest() {
+	TestDrawLine();
 	TestElements();
 	PointInPoligon();
 	TestSpace();
