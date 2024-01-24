@@ -27,6 +27,8 @@ DrawLine::DrawLine(Point A, Point B, double Xmin, double Xmax, double Ymin, doub
 	}
 
 DrawLine::DrawLine(const DrawLine& other) {
+		start = other.start;
+		end = other.end;
 		dx = other.dx;
 		dy = other.dy;
 		dxy = other.dxy;
@@ -37,6 +39,8 @@ DrawLine::DrawLine(const DrawLine& other) {
 	}
 
 DrawLine::DrawLine(DrawLine&& other) {
+		start = std::move(other.start);
+		end = std::move(other.end);
 		dx = std::move(other.dx);
 		dy = std::move(other.dy);
 		dxy = std::move(other.dxy);
@@ -47,6 +51,8 @@ DrawLine::DrawLine(DrawLine&& other) {
 	}
 
 DrawLine& DrawLine::operator=(const DrawLine& other) {
+		start = other.start;
+		end = other.end;
 		dx = other.dx;
 		dy = other.dy;
 		dxy = other.dxy;
@@ -58,6 +64,8 @@ DrawLine& DrawLine::operator=(const DrawLine& other) {
 	}
 
 DrawLine& DrawLine::operator=(DrawLine&& other) {
+		start = std::move(other.start);
+		end = std::move(other.end);
 		dx = std::move(other.dx);
 		dy = std::move(other.dy);
 		dxy = std::move(other.dxy);
@@ -68,21 +76,11 @@ DrawLine& DrawLine::operator=(DrawLine&& other) {
 		return *this;
 	}
 
-void DrawLine::Set(const DrawLine& other) {
-	dx = other.dx;
-	dy = other.dy;
-	dxy = other.dxy;
-	qx = other.qx;
-	qX = other.qX;
-	qy = other.qy;
-	qY = other.qY;
-}
-
 double DrawLine::GetU1() const{
 	return qx - qy + dxy;
 }
 double DrawLine::GetU2() const {
-	return qx - qY + dx;
+	return qx - qY + dxy;
 }
 
 double DrawLine::GetU3() const {
@@ -139,7 +137,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 		, x2 = finish.x
 		, y2 = finish.y;
 	// step 1
-	if ((x1 < Xmin && x2 < Xmin) || (x1 > Xmax && x2 > Xmax) || (y1 < Ymin && y2 < Ymin) || (y1 > Ymax && y2 > Ymax)) std::nullopt;
+	if ((x1 < Xmin && x2 < Xmin) || (x1 > Xmax && x2 > Xmax) || (y1 < Ymin && y2 < Ymin) || (y1 > Ymax && y2 > Ymax)) return std::nullopt;
 	
 	//step 2
 	if (y1 > y2) {
@@ -177,7 +175,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 	double U1 = result.GetU1();
 	double U2 = result.GetU2();
 	// step 7 - crossing left border
-	if ((U1 < 0 && U2 > 0) || (U1 > 0 && U2 < 0)) {
+	if ((U1 <= 0 && U2 > 0) || (U1 > 0 && U2 <= 0)) {
 		//step 7.a
 		j++;
 		//step 7.b
@@ -195,7 +193,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 	U2 = result.GetU2();
 	double U3 = result.GetU3();
 	//step 8 - crossing up border
-	if ((U2 < 0 && U3 > 0) || (U2 > 0 && U3 < 0)) {
+	if ((U2 <= 0 && U3 > 0) || (U2 > 0 && U3 <= 0)) {
 		//step 8.a
 		j++;
 		//step 8.b
@@ -208,7 +206,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 	U3 = result.GetU3();
 	double U4 = result.GetU4();
 	//step 9 - crossing right border
-	if ((U3 > 0 && U4 < 0) || (U3 < 0 && U4 > 0)) {
+	if ((U3 > 0 && U4 <= 0) || (U3 <= 0 && U4 > 0)) {
 		//step 9.a
 		j++;
 		//step 9.b
@@ -218,7 +216,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 			result = DrawLine(Point(x1, y1), Point(x2, y2), Xmin, Xmax, Ymin, Ymax);
 		}
 		//step 9.c
-		if (x2 > Xmax) {
+		else if (x2 > Xmax) {
 			y2 = (Xmax * result.dy + result.dxy) / result.dx;
 			x2 = Xmax;
 			result = DrawLine(Point(x1, y1), Point(x2, y2), Xmin, Xmax, Ymin, Ymax);
@@ -227,7 +225,7 @@ std::optional<DrawLine> RectangleCut(const Point& start, const Point& finish, do
 	U1 = result.GetU1();
 	U4 = result.GetU4();
 	//step 10 - crossing down border
-	if ((U4 < 0 && U1 > 0) || (U4 > 0 && U1 < 0)) {
+	if ((U4 <= 0 && U1 > 0) || (U4 > 0 && U1 <= 0)) {
 		//step 10.a
 		j++;
 		//step 10.b

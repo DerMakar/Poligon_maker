@@ -227,3 +227,98 @@ void Poligon::Print(std::ostream& out) const {
 Poligon operator+(const Poligon& P_1, const Poligon& P_2) {
 	return P_1.Union(P_2);
 }
+
+std::deque<Poligon> Poligon::RandomLineCut(const Line& line) const {
+	// dY*x - dX*y + D = 0
+	// find U1 and U2 for every point of poligon by RectangleCut(const Point& start, const Point& finish, double Xmin, double Xmax, double Ymin, double Ymax);
+	// next U2 == prev U1
+	// y1 < y2, if y1 == y2 -> x1 < x2
+	if (poligon.size() < 3) return {};
+	std::deque<Poligon> poligons;
+	struct Node {
+		Node() = default;
+
+		Node(const Point& point, const Node* next)
+			: point(point)
+			, next_point(next) {
+
+		}
+
+		Node(const Point& point)
+			: point(point) {
+		}
+
+		Point point;
+		const Node* next_point = nullptr;
+
+	};
+	std::vector<Node> NxP(poligon.size());
+	size_t j = poligon.size() - 1;
+	for (size_t i = 0; i < poligon.size(); ++i) {
+		Node node(poligon[j], &NxP[i]);
+		NxP[j] = node;
+		j = i;
+	}
+	//step 1
+	
+	double U1 = line.dY * poligon[j].x - line.dX * poligon[j].y + line.C;
+	//step 2	
+	for(size_t i = 0; i < poligon.size(); i++){
+		//step 3
+		double U2 = line.dY * poligon[i].x - line.dX * poligon[i].y + line.C;
+		if (U1 <= 0 && U2 <= 0) {
+
+		}
+		else {
+			//step 4
+			if (U1 >= 0 && U2 >= 0) {
+				
+			}
+			// step 5
+			else {
+					Point line_st(poligon[j].x, (poligon[j].x * line.dY + line.C) / line.dX);
+					Point line_end(poligon[i].x, (poligon[i].x * line.dY + line.C) / line.dX);
+					auto crossing_point = LineCrossingPoint(poligon[j], poligon[i], line_st, line_end);
+					//step 6
+					if (U1 < 0) {
+						Node node(crossing_point.value(), &NxP[i]);
+						NxP.push_back(node);
+					}
+					//step 7
+					else {
+						Node node(crossing_point.value());
+						NxP.push_back(node);
+						NxP[i - 1].next_point = &NxP.back();
+					}
+				}
+			}
+		//step 8
+		U1 = U2;
+		j = i;
+	}
+	if (NxP.size() > poligon.size()) {
+		size_t i = poligon.size();
+		std::sort(std::next(NxP.begin(), i), NxP.end(), [](const Node& left, const Node& right) {
+			if (left.point.y != right.point.y) return left.point.y < right.point.y;
+			return left.point.x < right.point.x;
+			});
+		for (size_t i = poligon.size(); i + 1 < NxP.size(); i++) {
+			if (NxP[i].next_point == nullptr) {
+				NxP[i].next_point = &NxP[i + 1];
+			}
+			else if (NxP[i + 1].next_point == nullptr) {
+				NxP[i + 1].next_point = &NxP[i];
+			}
+			Poligon poligon;
+			size_t t = 0;
+			const Node* curr_ptr = NxP[i].next_point;
+			while (curr_ptr != &NxP[i]) {
+				poligon.AddPoint(curr_ptr->point, t++);
+				curr_ptr = curr_ptr->next_point;
+			}
+			poligon.AddPoint(curr_ptr->point, t++);
+			poligons.push_back(poligon);
+		}
+	}
+	return poligons;
+}

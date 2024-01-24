@@ -45,9 +45,83 @@ void TestElements() {
 void TestDrawLine() {
 	Point A(1, 1);
 	Point B(3, 3);
+	Point C(-1, 1);
+	Point D(6, 3);
+	Point E(1, 6);
+	Point F(3, -1);
+	Point J(-1, -1);
+	Point I(6, 5);
+	Point H(4, 7);
+	Point G(6, -1);
+	Point K(-3, -3);
+	Point L(8, 8);
 	double Xmin = 0, Xmax = 5, Ymin = 0, Ymax = 5;
 	auto line = RectangleCut(A, B, Xmin, Xmax, Ymin, Ymax);
 	assert(line.value().start == A);
+	assert(line.value().end == B);
+	line = RectangleCut(A, C, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().start == Point(0,1));
+	line = RectangleCut(B, D, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().end == Point(5, 3));
+	line = RectangleCut(A, E, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().end == Point(1, 5));
+	line = RectangleCut(B, F, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().start == Point(3, 0));
+	line = RectangleCut(C, J, Xmin, Xmax, Ymin, Ymax);
+	assert(!line.has_value());
+	line = RectangleCut(A, I, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().end == Point(5, 4.2));
+	line = RectangleCut(A, H, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().end == Point(3, 5));
+	line = RectangleCut(B, K, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().start == Point(0, 0));
+	line = RectangleCut(L, B, Xmin, Xmax, Ymin, Ymax);
+	assert(line.value().end == Point(5, 5));
+}
+
+void TestRandomLineCut() {
+	{
+		Point A(1, 1);
+		Point B(3, 5);
+		Point C(5, 3);
+		std::vector<Point> point_collection({ A, B, C });
+		Poligon square;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			square.AddPoint(point_collection[i], i);
+		}
+		Line line(Point(0, 5), Point(5, 0));
+		auto vectors = square.RandomLineCut(line);
+	}
+	{
+		Point A(1, 3);
+		Point B(3, 5);
+		Point C(6, 2);
+		Point D(4, 0);
+		Point E(3, 1);
+		Point F(4, 3);
+		Point G(3, 3);
+		Point H(2, 2);
+		std::vector<Point> point_collection({ A, B, C, D, E, F, G, H });
+		Poligon square;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			square.AddPoint(point_collection[i], i);
+		}
+		Line line(Point(0, 5), Point(5, 0));
+		auto vectors = square.RandomLineCut(line);
+	}
+	{
+		Point A(1, 1);
+		Point B(1, 5);
+		Point C(3, 5);
+		Point D(3, 1);
+		std::vector<Point> point_collection({ A, B, C, D });
+		Poligon square;
+		for (size_t i = 0; i < point_collection.size(); ++i) {
+			square.AddPoint(point_collection[i], i);
+		}
+		Line line(Point(0, 5), Point(5, 0));
+		auto vectors = square.RandomLineCut(line);
+	}
 }
 
 void TestSpace() {
@@ -745,6 +819,7 @@ void PointInPoligon() {
 }
 
 void FullTest() {
+	TestRandomLineCut();
 	TestDrawLine();
 	TestElements();
 	PointInPoligon();

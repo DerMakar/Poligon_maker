@@ -25,10 +25,10 @@ struct Point {
 
 struct Line {
 	Line(Point A, Point B)
-		: dX(B.y - A.y)
-		, dY(A.x - B.x) {
-		C = (-1.0 * A.x) * (B.y - A.y);
-		C -= (-1.0 * A.y) * (B.x - A.x);
+		: dX(B.x - A.x)
+		, dY(B.y - A.y) {
+		C = (-1.0 * A.x) * dY;
+		C -= (-1.0 * A.y) * dX;
 	}
 	double dX = 0;
 	double dY = 0;
@@ -48,7 +48,6 @@ struct DrawLine {
 
 	DrawLine& operator=(DrawLine&& other);
 
-	void Set(const DrawLine& other);
 	double GetU1() const;
 	double GetU2() const;
 	double GetU3()const;

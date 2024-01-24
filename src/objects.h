@@ -3,7 +3,9 @@
 #include <cassert>
 #include <map>
 #include <vector>
+#include <exception>
 #include <iostream>
+#include <algorithm>
 
 #include "elements.h"
 
@@ -50,8 +52,12 @@ public:
 
 	void Print(std::ostream& out) const override;
 
+	std::deque<Poligon> RandomLineCut(const Line& line) const;
+
 private:
 	std::deque<Point> poligon;
+
+	
 };
 
 Poligon operator+(const Poligon& P_1, const Poligon& P_2);
